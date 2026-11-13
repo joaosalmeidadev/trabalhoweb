@@ -1,7 +1,7 @@
 {
   "name": "projetoweb",
   "version": "1.0.0",
-  "description": "",
+  "description": "teste123",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,18 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "dotenv": "^18.0.10",
     "ejs": "^7.0.2",
-    "express": "^5.3.0"
-  }
+    "express": "^5.3.0",
+    "mysql2": "^3.24.6"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joaosalmeidadev/trabalhoweb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joaosalmeidadev/trabalhoweb/issues"
+  },
+  "homepage": "https://github.com/joaosalmeidadev/trabalhoweb#readme"
 }
