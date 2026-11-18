@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receitas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <h1>Receitas</h1>
+        <h1 class="texto-topo">Receitas</h1>
         <p>Colocar aqui as receitas mais pesquisadas (ou as mais famosas)</p>
     </header>
 
@@ -18,9 +21,11 @@
 
             <form id="formPesquisa">
                 <label for="nomeReceita">Nome da receita:</label>
-                <input type="text" id="nomeReceita" placeholder="Ex: Pizza">
+                <input type="text" id="nomeReceita" placeholder="Ex: Pizza" class="input">
 
-                <button type="submit">Pesquisar</button>
+                <label for="categoria">Categoria:</label>
+                <input type="text" id="categoria" placeholder="Ex: Italiana" class="input">
+                <button type="submit" class="button">Pesquisar</button>
             </form>
         </section>
 
