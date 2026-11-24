@@ -1,14 +1,15 @@
-require('dotenv').config();
-const mysql = require('mysql2/promise');
-
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10
+const mysql = require('mysql2');
+const connection = mysql.createConnection({
+host: 'localhost',
+user: 'root',
+password: 'root',
+database: 'catalogo_receitas'
 });
-
-module.exports = pool;
+connection.connect((err) => {
+if (err) {
+console.error('Erro ao conectar: ' + err.stack);
+return;
+}
+console.log('Conectado com ID ' + connection.threadId);
+});
+module.exports = connection;
