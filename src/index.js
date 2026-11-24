@@ -4,17 +4,17 @@ require('dotenv').config();
 
 const app = express();
 
-//const receitaRoutes = require('./routes/receitaRoutes');
+// Middlewares precisam vir ANTES das rotas
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '../views')));
+
+// Rotas
+// const receitaRoutes = require('./routes/receitaRoutes');
 const apiRoutes = require('./routes/apiRoutes');
 
-
-//app.use('/receitas', receitaRoutes);
+// app.use('/receitas', receitaRoutes);
 app.use('/api', apiRoutes);
-
-app.use(express.json());
-app.use(express.static(path.join(__dirname, '../views')));
-app.use(express.urlencoded({ extended: true }));
-
 
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');

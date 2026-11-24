@@ -1,15 +1,22 @@
 const mysql = require('mysql2');
-const connection = mysql.createConnection({
-host: 'localhost',
-user: 'root',
-password: 'root',
-database: 'catalogo_receitas'
+require('dotenv').config();
+
+const pool = mysql.createPool({
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || 'root',
+    database: process.env.DB_NAME || 'catalogo_receitas',
+    port: process.env.DB_PORT || 3306
 });
-connection.connect((err) => {
-if (err) {
-console.error('Erro ao conectar: ' + err.stack);
-return;
-}
-console.log('Conectado com ID ' + connection.threadId);
+
+// Testa a conexão ao iniciar o servidor
+pool.getConnection((err, connection) => {
+    if (err) {
+        console.error('Erro ao conectar no MySQL:', err.message);
+        return;
+    }
+    console.log('Conectado ao MySQL (catalogo_receitas) com ID ' + connection.threadId);
+    connection.release();
 });
-module.exports = connection;
+
+module.exports = pool.promise();
