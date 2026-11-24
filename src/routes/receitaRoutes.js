@@ -1,23 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const receitaController = require('../controllers/receitaController');
 
-router.get('/', (req, res) => {
+router.get('/', receitaController.listar);
+router.get('/buscar', receitaController.buscar);
+router.post('/criar', receitaController.criar);
 
-})
-router.get('/:id', (req, res) => {
-    
-})
-router.get('/:nome', (req, res) => {
-    
-})
-router.post('/', (req, res) => {
-
-});
-
-router.put('/:id', (req, res) => {
-
-});
-
-router.delete('/:id', (req, res) => {
-
-});
+module.exports = router;
