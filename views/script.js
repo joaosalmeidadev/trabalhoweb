@@ -1,52 +1,62 @@
-const formularioPesquisa = document.getElementById('formPesquisa');
-const campoNome = document.getElementById('nomeReceita');
-const resultados = document.getElementById('resultados');
-const detalhes = document.getElementById('detalhesReceita');
+const formPesquisa = document.getElementById('formPesquisa');
+const divResultados = document.getElementById('resultados');
+const sectionDetalhes = document.getElementById('detalhesReceita');
 
-// depois podem tirar esses comentarios mas vou explicar oq cada coisa faz, ja que a gente nn aprendeu sobre api nas aulas
+// Função que renderiza os cards na tela
+function mostrarReceitas(receitas) {
+    sectionDetalhes.innerHTML = '';
 
-formularioPesquisa.addEventListener('submit', async (evento) => {
-    //essa função é pra pagina nn recarregar
-    evento.preventDefault();
-
-    const nome = campoNome.value;
-
-    const resposta = await fetch(`/api/receitas?nome=${encodeURIComponent(nome)}`);
-
-    const dados = await resposta.json();
-    //esse if é pra caso o cara coloque algo q nn existe, ou n encontre uma receita
-    if (!dados.meals) {
-        resultados.innerHTML = `
-            <p>Nenhum resultado encontrado</p>
-        `;
-        return
+    if (!receitas || receitas.length === 0) {
+        divResultados.innerHTML = '<p>Nenhum resultado encontrado.</p>';
+        return;
     }
 
+    divResultados.innerHTML = receitas.map(receita => `
+        <div class="card-receita" style="border: 1px solid #ccc; padding: 12px; margin-bottom: 12px; border-radius: 8px;">
+            ${receita.foto ? `<img src="${receita.foto}" alt="${receita.nome}" style="max-width: 220px; border-radius: 6px;">` : ''}
+            <h3>${receita.nome}</h3>
+            <p><strong>País:</strong> ${receita.pais} | <strong>Categoria:</strong> ${receita.categoria}</p>
+            <p><strong>Autor:</strong> ${receita.autor}</p>
+            <button type="button" onclick="verDetalhes(${receita.id})">Ver modo de preparo</button>
+        </div>
+    `).join('');
+}
 
-    // esse innerHTML vai servir para apagar os resultados anteriores
-    resultados.innerHTML = '';
+// Função para exibir ingredientes e modo de preparo ao clicar
+async function verDetalhes(id) {
+    const resp = await fetch(`/api/receitas/${id}`);
+    const receita = await resp.json();
 
-    //esse foreach percorre todas as receitas da api encontradas
-    dados.meals.forEach((receita) => {
-        //vai criar um card pra cada elemente encontrado, tipo um for in que cria um card pra cada elemento
-        const card = document.createElement('div');
+    sectionDetalhes.innerHTML = `
+        <div style="background: #f9f9f9; padding: 16px; border-radius: 8px; margin-top: 16px;">
+            <h3>${receita.nome} - Detalhes</h3>
+            <h4>Ingredientes:</h4>
+            <ul>
+                ${receita.ingredientes.map(ing => `<li>${ing}</li>`).join('')}
+            </ul>
+            <h4>Modo de Preparo:</h4>
+            <p>${receita.modo_de_preparo}</p>
+        </div>
+    `;
+}
 
-        //esses receita.alguma coisa, são as informaçoes contidas no objeto da api, tipo, se pesquisou por pizza, ess strCategory vai pegar a categoria da pizza (ta tudo na api)
-        card.innerHTML = `
-        <h3>${receita.strMeal}</h3>
-        <img src="${receita.strMealThumb}" alt="${receita.strMeal}" width="200">
-        <p>Categoria: ${receita.strCategory}</p>
-        <p>Origem: ${receita.strArea}</p>
-        <button class="btnDetalhes">Ver receita</button>
-        `;
-        //adiciona oq a gente criou na tela
-        resultados.appendChild(card);
+// Intercepta o envio do formulário de pesquisa
+formPesquisa.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        //essa variavel botao vai pegar o botao que a gente criou la no innerHTML e vamo adicionar uma funçaõ pra ter o ver detalhes
-        const botao = card.querySelector('.btnDetalhes');
-        //esse botao vai te redirecionar pra uma nova janela detalhes.html e vai puxar o id da comida que vc clicou em ver dfetalhes
-        botao.addEventListener('click', () => {
-            window.location.href = `detalhes.html?id=${receita.idMeal}`;
-        });
+    const params = new URLSearchParams({
+        nome: document.getElementById('nomeReceita').value,
+        categoria: document.getElementById('categoria').value,
+        ingrediente: document.getElementById('ingrediente').value,
+        pais: document.getElementById('pais').value
     });
+
+    try {
+        const resposta = await fetch(`/api/receitas?${params.toString()}`);
+        const receitas = await resposta.json();
+        mostrarReceitas(receitas);
+    } catch (erro) {
+        console.error('Erro na requisição:', erro);
+        divResultados.innerHTML = '<p>Erro ao conectar com o servidor.</p>';
+    }
 });

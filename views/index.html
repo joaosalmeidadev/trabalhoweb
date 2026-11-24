@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receitas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="visual.css">
-<link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
 
     <header>
@@ -44,6 +46,39 @@
             </div>
             <section id="detalhesReceita"></section>
         </section>
+
+
+
+        <section>
+            <h1>Crie uma Receita!</h1>
+            <form id="formCadastro" action="/api/receitas" method="POST">
+                <label for="nome">Nome da receita:</label>
+                <input type="text" id="nome" name="nome" placeholder="Ex: Pizza" class="input" required>
+
+                <label for="categoriaCadastro">Categoria:</label>
+                <input type="text" id="categoriaCadastro" name="categoria" placeholder="Ex: Massas" class="input"
+                    required>
+
+                <label for="paisCadastro">País:</label>
+                <input type="text" id="paisCadastro" name="pais" placeholder="Ex: Itália" class="input" required>
+
+                <label for="autor">Autor:</label>
+                <input type="text" id="autor" name="autor" placeholder="Ex: João Silva" class="input" required>
+
+                <label for="foto">URL da Foto (opcional):</label>
+                <input type="text" id="foto" name="foto" placeholder="https://..." class="input">
+
+                <label for="ingredientes">Ingredientes (separe por vírgula ou quebra de linha):</label>
+                <textarea id="ingredientes" name="ingredientes" placeholder="Ex: 200g de queijo, 3 tomates, massa..."
+                    class="input" required></textarea>
+
+                <label for="instrucoes">Modo de Preparo:</label>
+                <textarea id="instrucoes" name="modo_de_preparo" placeholder="Ex: Misture os ingredientes e asse..."
+                    class="input" required></textarea>
+
+                <button type="submit" class="button">Cadastrar Receita</button>
+            </form>
+        </section>
     </main>
 
     <footer>
@@ -52,4 +87,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

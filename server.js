@@ -37,6 +37,6 @@ app.get('/receitas', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('Servidor rodando! Acesse http://localhost:3000/receitas');
+app.listen(5000, () => {
+  console.log('Servidor rodando! Acesse http://localhost:5000/receitas');
 });

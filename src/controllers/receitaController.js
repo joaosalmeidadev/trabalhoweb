@@ -10,38 +10,39 @@ const listar = (req, res) => {
 };
 
 const buscar = (req, res) => {
-  const {tipo, q} = req.query;
+  const { tipo, q } = req.query;
 
   const buscas = {
     titulo: Receita.buscarTitulo,
+    nome: Receita.buscarTitulo,
     categoria: Receita.buscarCategoria,
     autor: Receita.buscarAutor,
     pais: Receita.buscarPais
   };
 
   const busca = buscas[tipo];
-  if (!busca){
+  if (!busca) {
     return res.status(400).send('Tipo de busca inválido');
   }
+
   busca(q || '', (err, receitas) => {
-    if (err){
-        return res.status(500).send('Erro na busca');
+    if (err) {
+      console.error('Erro na busca:', err);
+      return res.status(500).send('Erro na busca');
     }
-    res.render('resultados', {receitas});
+    res.render('resultados', { receitas });
   });
 };
-
 const criar = (req, res) => {
-  const {titulo, categoria, autor} = req.body;
-  Receita.adicionarReceita(titulo, categoria, autor, (err) => {
-    if (err){
-        return res.status(500).send('Erro ao salvar receita');
+  Receita.adicionarReceita(req.body, (err) => {
+    if (err) {
+      return res.status(500).send('Erro ao salvar receita');
     }
     res.redirect('/');
   });
 };
 
-export {
+module.exports = {
   listar,
   buscar,
   criar
