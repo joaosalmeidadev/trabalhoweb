@@ -1,7 +1,6 @@
 const db = require('../config/db');
 
-// GET /api/receitas -> Lista todas ou filtra por nome, categoria, ingrediente e país
-exports.buscarReceitas = async (req, res) => {
+buscarReceitas = async (req, res) => {
     const { nome, categoria, ingrediente, pais } = req.query;
 
     try {
@@ -31,7 +30,6 @@ exports.buscarReceitas = async (req, res) => {
             return res.json([]);
         }
 
-        // Busca todos os ingredientes para montar o array completo de cada receita encontrada
         const [todosIngredientes] = await db.query('SELECT * FROM ingredientes');
 
         const resultado = receitas.map(receita => ({
@@ -47,11 +45,11 @@ exports.buscarReceitas = async (req, res) => {
         res.status(500).json({ erro: 'Erro ao buscar receitas no banco de dados' });
     }
 };
-exports.adicionarReceita = async (req, res) => {
+
+adicionarReceita = async (req, res) => {
     const { nome, pais, categoria, foto, modo_de_preparo, autor, ingredientes } = req.body;
 
     try {
-        // 1. Insere na tabela principal 'receitas'
         const sqlReceita = `
             INSERT INTO receitas (nome, pais, categoria, foto, modo_de_preparo, autor) 
             VALUES (?, ?, ?, ?, ?, ?)
@@ -89,9 +87,7 @@ exports.adicionarReceita = async (req, res) => {
     }
 };
 
-
-// GET /api/receitas/:id -> Busca uma receita específica pelo ID
-exports.buscarPorId = async (req, res) => {
+buscarPorId = async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -116,4 +112,10 @@ exports.buscarPorId = async (req, res) => {
         console.error('Erro ao buscar receita por ID:', erro);
         res.status(500).json({ erro: 'Erro ao buscar a receita' });
     }
+};
+
+module.exports = {
+    buscarReceitas,
+    adicionarReceita,
+    buscarPorId
 };
