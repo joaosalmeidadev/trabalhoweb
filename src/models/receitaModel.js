@@ -1,6 +1,5 @@
 const db = require('../config/db');
 
-// Função auxiliar que busca receitas (todas ou filtradas) e anexa os ingredientes
 const consultarReceitas = async (whereClause = '', params = [], callback) => {
   try {
     const sql = `SELECT * FROM receitas ${whereClause}`;
@@ -26,17 +25,14 @@ const consultarReceitas = async (whereClause = '', params = [], callback) => {
   }
 };
 
-// Listar todas
 const listarReceitas = (callback) => {
   consultarReceitas('', [], callback);
 };
 
-// Categoria como item fixo (=)
 const buscarCategoria = (categoria, callback) => {
   consultarReceitas('WHERE categoria = ?', [categoria], callback);
 };
 
-// Buscas parciais (LIKE) - usa a coluna 'nome' do banco
 const buscarTitulo = (titulo, callback) => {
   consultarReceitas('WHERE nome LIKE ?', [`%${titulo}%`], callback);
 };
@@ -49,7 +45,6 @@ const buscarPais = (pais, callback) => {
   consultarReceitas('WHERE pais LIKE ?', [`%${pais}%`], callback);
 };
 
-// Adicionar receita
 const adicionarReceita = async (dados, callback) => {
   const { nome, pais, categoria, foto, modo_de_preparo, autor, ingredientes } = dados;
 
